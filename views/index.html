@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>DataLists</title>
   <!-- css文件 -->
-  <link rel="stylesheet" href="../layui-src/dist/css/layui.css">
+  <link rel="stylesheet" href="./layui/css/layui.css">
   <style>
     body {
       background: #eee;
@@ -110,8 +110,8 @@
   </script>
   <!-- js文件 -->
   <!-- 模块化开发 -->
-  <script src="../layui-src/dist/layui.js"></script>
-  <script src="../jquery/dist/jquery.js"></script>
+  <script src="./layui/layui.js"></script>
+  <script src="./jquery/jquery.js"></script>
   <script>
     layui.use('table', function(){
       var table = layui.table;
@@ -192,6 +192,7 @@
             btn: ['删除', '取消'],
             btn1: function(index, layero){
               layer.confirm('真的删除行么', function(index){
+                // 删除数据的数据库操作
                 obj.del();
                 layer.close(index);
                 layer.closeAll();
@@ -241,21 +242,13 @@
             shade: 0.3,
             btn: ['提交','取消'],
             yes: function(index, layero){
+              // 编辑数据操作
               obj.update({
                 username: $("#username").val(),
                 age: $("#age").val(),
                 character: $("#character").val(),
                 height: $("#height").val(),
               });
-              console.log(obj);
-              // console.log(index);
-              // console.log(layero);
-              // data.username = $("#username").val();
-              // data.age = $("#age").val();
-              // data.character = $("#character").val();
-              // data.height = $("#height").val();
-              // table.reload($("#table-list"));
-              // obj.defineProperty();
               layer.closeAll();
             },
             no: function (index, layero) {
