@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DataLists</title>
+  <!-- css文件 -->
+  <link rel="stylesheet" href="../layui-src/dist/css/layui.css">
+  <style>
+    body {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <!-- ··························主题table表格··························· -->
+  <h1 style="text-align:center;padding:15px 0;background:#fff;">用户列表</h1>
+  <div class="layui-container" style="background: #eee;padding:15px;min-width:1200px;">
+    <div class="layui-card ">
+      <div class="layui-card-header">
+          <span style="font-size:20px;">用户数据列表</span> 
+      </div>
+      <div class="layui-card-body">
+        <table id="demo" class="layui-table" lay-size="lg" lay-filter="test" ></table>
+      </div>
+    </div>
+  </div>
+  <!-- ································end表格··························· -->
+
+  <!-- ································弹出层表单························· -->
+  <form class="layui-form" id="form" style="display:none;margin-top:15px;">
+    <!-- id -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">ID：</label>
+      <div class="layui-input-block">
+        <input 
+          type="text" 
+          name="id" 
+          required 
+          lay-verify="required" 
+          readonly
+          class="layui-input" 
+          id="id" 
+          style="width:300px;background:#eee;cursor:pointer;">
+      </div>
+    </div>
+    <!-- username -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">姓名：</label>
+      <div class="layui-input-block">
+        <input 
+          type="text" 
+          name="username" 
+          required 
+          lay-verify="required" 
+          class="layui-input" 
+          id="username"
+          style="width:300px;">
+      </div>
+    </div>
+    <!-- age -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">年龄：</label>
+      <div class="layui-input-block">
+        <input 
+          type="text" 
+          name="age" 
+          required 
+          lay-verify="required" 
+          class="layui-input" 
+          id="age" 
+          style="width:300px;">
+      </div>
+    </div>
+    <!-- character -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">性格：</label>
+      <div class="layui-input-block">
+        <input 
+          type="text" 
+          name="character"
+          required 
+          lay-verify="required" 
+          class="layui-input" 
+          id="character" 
+          style="width:300px;">
+      </div>
+    </div>
+    <!-- height -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">身高：</label>
+      <div class="layui-input-block">
+        <input 
+          type="text" 
+          name="height" 
+          required 
+          lay-verify="required" 
+          class="layui-input" 
+          id="height" 
+          style="width:300px;">
+      </div>
+    </div>
+  </form>
+  <!-- ····························表格操作按钮······················· -->
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <!-- js文件 -->
+  <!-- 模块化开发 -->
+  <script src="../layui-src/dist/layui.js"></script>
+  <script src="../jquery/dist/jquery.js"></script>
+  <script>
+    layui.use('table', function(){
+      var table = layui.table;
+
+      // table的表头渲染
+      table.render({
+        elem: '#demo'
+        ,url: 'http://127.0.0.1:3000/user/lists' //数据接口
+        // ,page: true //开启分页
+        ,width: 1050
+        ,height: 500
+        ,cols: [[ //表头
+          {field: 'id', title: 'ID', width:120, sort: true, fixed: 'left',align: 'center'}
+          ,{field: 'username', title: '姓名', width:155,align: 'center'}
+          ,{field: 'age', title: '年龄', width:155, sort: true,align: 'center'}
+          ,{field: 'character', title: '性格', width:155,align: 'center'} 
+          ,{field: 'height', title: '身高', width: 155, sort: true,align: 'center'}
+          ,{field: 'controls', title: '操作', width: 300,fexed: 'right',align: 'center',toolbar: '#barDemo' }
+        ]]
+      });
+      //监听工具条
+      table.on('tool(test)', function(obj){
+        var data = obj.data;
+        // ································查看信息·························
+        if(obj.event === 'detail'){
+          // 查看表格层
+          layer.open({
+            type:1,
+            area:['500px','400px'],
+            title: '查看数据',
+            content: $("#form"),
+            shade: 0.3,
+            // btn: ['提交', '重置'],
+            btn1: function(index, layero){
+              var kk=$("#username").val();
+              layer.closeAll();
+            },
+            btn2: function(index, layero){
+              // alert("2222");
+              return false;
+            },
+            success: function (layero, index) {
+              var form = layui.form;
+              var id = $("#id");
+              var username = $("#username");
+              var age = $("#age");
+              var character = $("#character");
+              var height = $("#height");
+                if(data){
+                    // 取到弹出层里的元素，并把编辑的内容放进去
+                    id.val(data.id);
+                    username.val(data.username);
+                    age.val(data.age);
+                    character.val(data.character);
+                    height.val(data.height);
+                    // 是否可以编辑
+                    username.attr("readonly","readonly").css("background","#eee");
+                    age.attr("readonly","readonly").css("background","#eee");
+                    character.attr("readonly","readonly").css("background","#eee");
+                    height.attr("readonly","readonly").css("background","#eee");
+                    form.render();
+                }
+            },
+            cancel: function(layero,index){ 
+              $("#test").css("display",'none');
+              layer.closeAll();
+            }
+          });
+        }
+        // ···································删除信息 ························
+        else if(obj.event === 'del'){
+          layer.open({
+            type:1,
+            area:['500px','400px'],
+            title: '删除数据',
+            content: $("#form"),
+            shade: 0.3,
+            btn: ['删除', '取消'],
+            btn1: function(index, layero){
+              layer.confirm('真的删除行么', function(index){
+                obj.del();
+                layer.close(index);
+                layer.closeAll();
+              });
+            },
+            btn2: function(index, layero){
+              layer.closeAll();
+            },
+            success: function (layero, index) {
+              // console.log(data);
+              // console.log($("#form").find("#id"));
+              var form = layui.form;
+              var id = $("#id");
+              var username = $("#username");
+              var age = $("#age");
+              var character = $("#character");
+              var height = $("#height");
+                if(data){
+                    // 取到弹出层里的元素，并把编辑的内容放进去
+                    id.val(data.id);
+                    username.val(data.username);
+                    age.val(data.age);
+                    character.val(data.character);
+                    height.val(data.height);
+                    // 是否可以编辑
+                    username.attr("readonly","readonly").css("background","#eee");
+                    age.attr("readonly","readonly").css("background","#eee");
+                    character.attr("readonly","readonly").css("background","#eee");
+                    height.attr("readonly","readonly").css("background","#eee");
+                    form.render();
+                }
+            },
+            cancel: function(layero,index){ 
+              $("#test").css("display",'none');
+              layer.closeAll();
+            }
+          });
+        } 
+        // ······································编辑数据··························
+        else if(obj.event === 'edit'){
+          // 编辑表格层
+          layer.open({
+            type:1,
+            area:['500px','400px'],
+            title: '编辑数据',
+            content: $("#form"),
+            shade: 0.3,
+            btn: ['提交','取消'],
+            yes: function(index, layero){
+              obj.update({
+                username: $("#username").val(),
+                age: $("#age").val(),
+                character: $("#character").val(),
+                height: $("#height").val(),
+              });
+              console.log(obj);
+              // console.log(index);
+              // console.log(layero);
+              // data.username = $("#username").val();
+              // data.age = $("#age").val();
+              // data.character = $("#character").val();
+              // data.height = $("#height").val();
+              // table.reload($("#table-list"));
+              // obj.defineProperty();
+              layer.closeAll();
+            },
+            no: function (index, layero) {
+              layui.closeAll();
+            },
+            success: function (layero, index) {
+              // console.log(data);
+              // console.log($("#form").find("#id"));
+              var form = layui.form;
+              var id = $("#id");
+              var username = $("#username");
+              var age = $("#age");
+              var character = $("#character");
+              var height = $("#height");
+                if(data){
+                    // 取到弹出层里的元素，并把编辑的内容放进去
+                    id.val(data.id);
+                    username.val(data.username);
+                    age.val(data.age);
+                    character.val(data.character);
+                    height.val(data.height);
+                    // 是否可以编辑
+                    username.removeAttr("readonly","readonly").css("background","#fff");
+                    age.removeAttr("readonly","readonly").css("background","#fff");
+                    character.removeAttr("readonly","readonly").css("background","#fff");
+                    height.removeAttr("readonly","readonly").css("background","#fff");
+                    form.render();
+                }
+            },
+            cancel: function(layero,index){ 
+              $("#test").css("display",'none');
+              layer.closeAll();
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../node_modules/layui-src/dist/css/layui.css">
+</head>
+<body>
+  
+  <form class="layui-form" id="test" style="display:none;margin-top:15px;">
+      <div class="layui-form-item">
+          <label class="layui-form-label">ID：</label>
+          <div class="layui-input-block">
+            <input type="text" name="id" required lay-verify="required" class="layui-input" id="id" 
+            disabled
+            placeholder="111"
+            style="width:300px;background:#eee;cursor:pointer">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">姓名：</label>
+          <div class="layui-input-block">
+            <input type="text" name="username" required lay-verify="required" class="layui-input" id="username" style="width:300px;">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">年龄：</label>
+          <div class="layui-input-block">
+            <input type="text" name="age" required lay-verify="required" class="layui-input" id="age" style="width:300px;">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">性格：</label>
+          <div class="layui-input-block">
+            <input type="text" name="character" required lay-verify="required" class="layui-input" id="character" style="width:300px;">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">身高：</label>
+          <div class="layui-input-block">
+            <input type="text" name="height" required lay-verify="required" class="layui-input" id="height" style="width:300px;">
+          </div>
+        </div>
+      <!-- <div class="layui-form-item">
+        <label class="layui-form-label">输入框：</label>
+        <div class="layui-input-block">
+          <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="on" class="layui-input" id="username" style="width:100px">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">密码框：</label>
+        <div class="layui-input-inline">
+          <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="on" class="layui-input">
+        </div> -->
+        <!-- <div class="layui-form-mid layui-word-aux">辅助文字</div> -->
+      </div>
+    </form>
+    <button id="div">提交</button>
+    <button style="margin: 0 auto;text-align:center;" id="hello">hello</button>
+
+    <script src="../node_modules/layui-src/dist/layui.all.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script>
+      $("#hello").click(null,() => {
+        console.log(1);
+      })
+      console.log($("#div"));
+      $("#div").on("click",null,() => {
+        // alert("hello")
+        layer.open({
+          type:1,
+          area:['500px','400px'],
+          title: '查看信息'
+          ,content: $("#test"),
+          shade: 0.3,
+          btn: ['提交', '重置']
+          ,btn1: function(index, layero){
+            var kk=$("#username").val();
+            // alert(kk);
+            // cancel();
+            layer.closeAll();
+          },
+          btn2: function(index, layero){
+          alert("2222");
+          return false;
+          },
+          cancel: function(layero,index){ 
+            $("#test").css("display",'none');
+            layer.closeAll();
+          }
+    
+          }); 
+      })
+
+
+    </script>  
+</body>
+</html>
